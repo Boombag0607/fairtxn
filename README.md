@@ -1,35 +1,13 @@
-REMIX DEFAULT WORKSPACE
+# Fair Transaction
+-
+The contract solves the following problem-
 
-Remix default workspace is present when:
-i. Remix loads for the very first time 
-ii. A new workspace is created with 'Default' template
-iii. There are no files existing in the File Explorer
+Suppose there is a new website named xyz.com which is offering heavy discounts and also there is a website abc.com which is offering high-quality items at the same price as of Amazon. But any normal user will be hesitant to buy any item from abc.com or xyz.com due to the lack of trust (ie after payment xyz.com may not deliver the item, etc) although xyz.com and abc.com are offering better products at a lower price.
 
-This workspace contains 3 directories:
+I tried to solve this problem by building a smart contract that sends the amount to xyz.com only when the item has been delivered to the user and off- loading of the item starts only when the user has paid the amount of the item to the smart contract which is deployed on the blockchain.
 
-1. 'contracts': Holds three contracts with increasing levels of complexity.
-2. 'scripts': Contains four typescript files to deploy a contract. It is explained below.
-3. 'tests': Contains one Solidity test file for 'Ballot' contract & one JS test file for 'Storage' contract.
+Using a state variable `currentState` which uses template of `State` to denote different events in the transaction which gets initalised to `AWAITING_PAYMENT` inside the constructor.
+`currentState` changes with the completion of every event divided in the 3 functions for each situation.
 
-SCRIPTS
-
-The 'scripts' folder has four typescript files which help to deploy the 'Storage' contract using 'web3.js' and 'ethers.js' libraries.
-
-For the deployment of any other contract, just update the contract's name from 'Storage' to the desired contract and provide constructor arguments accordingly 
-in the file `deploy_with_ethers.ts` or  `deploy_with_web3.ts`
-
-In the 'tests' folder there is a script containing Mocha-Chai unit tests for 'Storage' contract.
-
-To run a script, right click on file name in the file explorer and click 'Run'. Remember, Solidity file must already be compiled.
-Output from script will appear in remix terminal.
-
-Please note, require/import is supported in a limited manner for Remix supported modules.
-For now, modules supported by Remix are ethers, web3, swarmgw, chai, multihashes, remix and hardhat only for hardhat.ethers object/plugin.
-For unsupported modules, an error like this will be thrown: '<module_name> module require is not supported by Remix IDE' will be shown.
-
-
-Using a state variable "currentState" which uses template of "State" to denote different events in the transaction which gets initalised to AWAITING_PAYMENT inside the constructor.
-"currentState" changes with the completion of every event divided in the 3 functions for each situation.
-
-sendPayment() and confirmDelivery() function can be called by the buyer only, as indicated by the modifier. The buyer makes payment and confirms if they recieved the item.
-refundBuyer() can be called by seller to reverse transact the balance in case of unsuccessful delivery.
+`sendPayment()` and `confirmDelivery()` function can be called by the buyer only, as indicated by the `modifier`. The buyer makes payment and confirms if they recieved the item.
+`refundBuyer()` can be called by seller to reverse transact the balance in case of unsuccessful delivery.
