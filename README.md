@@ -6,8 +6,8 @@ Suppose there is a new website named xyz.com which is offering heavy discounts a
 
 I tried to solve this problem by building a smart contract that sends the amount to xyz.com only when the item has been delivered to the user and off- loading of the item starts only when the user has paid the amount of the item to the smart contract which is deployed on the blockchain.
 
-Using a state variable `currentState` which uses template of `State` to denote different events in the transaction which gets initalised to `AWAITING_PAYMENT` inside the constructor.
+Using a state variable `currentState` which uses template of `State` to denote different events in the transaction which gets initalised to `AWAITING_PAYMENT` inside the constructor. The `owner` is the inital party to call the functions.
 `currentState` changes with the completion of every event divided in the 3 functions for each situation.
 
 `sendPayment()` and `confirmDelivery()` function can be called by the buyer only, as indicated by the `modifier`. The buyer makes payment and confirms if they recieved the item.
-`refundBuyer()` can be called by seller to reverse transact the balance in case of unsuccessful delivery.
+`refundBuyer()` is to be called by `owner` of the smart contract to reverse transact the balance in case of unsuccessful delivery.
