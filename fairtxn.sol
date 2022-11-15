@@ -7,6 +7,7 @@ contract FairTxn {
     
     address payable buyer;
     address payable seller;
+    address public owner;
 
     modifier onlyBuyer() {
         require(msg.sender==buyer);
@@ -18,9 +19,15 @@ contract FairTxn {
         _;
     }
 
+    modifier onlyOwner() {
+        require(msg.sender==owner);
+        _;
+    }
+
     constructor(address payable _buyer, address payable _seller) {
         buyer = _buyer;
         seller = _seller;
+        owner = msg.sender;
         currentState = State.AWATING_PAYMENT;
     }
 
@@ -31,11 +38,12 @@ contract FairTxn {
     
     function confirmDelivery() external onlyBuyer {
         require( currentState == State.AWAITING_DELIVERY );
-        seller.transfer(address(this).balance);
         currentState = State.COMPLETE;
+        seller.transfer(address(this).balance);
     }
 
-    function refundBuyer() public onlySeller {
+    function refundBuyer() public onlyOwner {
+        require(currentState == State.AWAITING_DELIVERY);
         buyer.transfer(address(this).balance);
         currentState = State.REFUNDED;
     }
